@@ -59,7 +59,7 @@ export const SearchRelated: React.FC<SearchRelatedProps> = ({
   }
 
   return related ? (
-    <Section title="Related" separator={true}>
+    <Section title="相关内容" separator={true}>
       <form onSubmit={handleSubmit} className="flex flex-wrap">
         {Array.isArray(related.items) ? (
           related.items

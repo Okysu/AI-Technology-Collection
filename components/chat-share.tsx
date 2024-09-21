@@ -34,12 +34,12 @@ export function ChatShare({ chatId, className }: ChatShareProps) {
     })
     const result = await shareChat(chatId)
     if (!result) {
-      toast.error('Failed to share chat')
+      toast.error('分享聊天失败')
       return
     }
 
     if (!result.sharePath) {
-      toast.error('Could not copy link to clipboard')
+      toast.error('无法复制链接到剪贴板')
       return
     }
 
@@ -50,10 +50,10 @@ export function ChatShare({ chatId, className }: ChatShareProps) {
   const handleCopy = () => {
     if (shareUrl) {
       copyToClipboard(shareUrl)
-      toast.success('Link copied to clipboard')
+      toast.success('链接已复制到剪贴板')
       setOpen(false)
     } else {
-      toast.error('No link to copy')
+      toast.error('没有可复制的链接')
     }
   }
 
@@ -77,20 +77,20 @@ export function ChatShare({ chatId, className }: ChatShareProps) {
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Share link to search result</DialogTitle>
+            <DialogTitle>分享搜索结果链接</DialogTitle>
             <DialogDescription>
-              Anyone with the link will be able to view this search result.
+              任何拥有此链接的人都能查看这个搜索结果。
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="items-center">
             {!shareUrl && (
               <Button onClick={handleShare} disabled={pending} size="sm">
-                {pending ? <Spinner /> : 'Get link'}
+                {pending ? <Spinner /> : '获取链接'}
               </Button>
             )}
             {shareUrl && (
               <Button onClick={handleCopy} disabled={pending} size="sm">
-                {'Copy link'}
+                {'复制链接'}
               </Button>
             )}
           </DialogFooter>

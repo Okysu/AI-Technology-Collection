@@ -17,7 +17,7 @@ const formatDateWithTime = (date: Date | string) => {
   yesterday.setDate(yesterday.getDate() - 1)
 
   const formatTime = (date: Date) => {
-    return date.toLocaleString('en-US', {
+    return date.toLocaleString('zh-CN', {
       hour: '2-digit',
       minute: '2-digit',
       hour12: true
@@ -29,15 +29,15 @@ const formatDateWithTime = (date: Date | string) => {
     parsedDate.getMonth() === now.getMonth() &&
     parsedDate.getFullYear() === now.getFullYear()
   ) {
-    return `Today, ${formatTime(parsedDate)}`
+    return `今天, ${formatTime(parsedDate)}`
   } else if (
     parsedDate.getDate() === yesterday.getDate() &&
     parsedDate.getMonth() === yesterday.getMonth() &&
     parsedDate.getFullYear() === yesterday.getFullYear()
   ) {
-    return `Yesterday, ${formatTime(parsedDate)}`
+    return `昨天, ${formatTime(parsedDate)}`
   } else {
-    return parsedDate.toLocaleString('en-US', {
+    return parsedDate.toLocaleString('zh-CN', {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',

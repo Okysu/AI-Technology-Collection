@@ -64,7 +64,7 @@ export const CollapsibleMessage: React.FC<CollapsibleMessageProps> = ({
                 'h-4 w-4 transition-all'
               )}
             />
-            <span className="sr-only">collapse</span>
+            <span className="sr-only">折叠</span>
           </Button>
         </div>
       </CollapsibleTrigger>

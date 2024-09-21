@@ -1,11 +1,23 @@
-# Morphic
+# AI-Collection
 
-An AI-powered search engine with a generative UI.
+An AI-powered search engine with a generative UI. This project is an open-source version modified based on miurla/morphic. The main modifications include:
 
-![capture](/public/capture-240404_blk.png)
+- Translated UI-related text into Chinese
+- Added support for native Bing search
+- Added a collection of some AI portal websites
 
-> [!NOTE]
-> Please note that there are differences between this repository and the official website [morphic.sh](https://morphic.sh). The official website is a fork of this repository with additional features such as authentication, which are necessary for providing the service online. The core source code of Morphic resides in this repository, and it's designed to be easily built and deployed.
+[!NOTE]
+This project is an open-source version modified based on miurla/morphic. The main modifications include:
+
+Translated UI-related text into Chinese
+Added support for native Bing search
+Added a collection of some AI portal websites
+
+The core functionality and architecture of the original project remain unchanged.
+
+
+[!NOTE]
+Please note that there are differences between this repository and the official website morphic.sh. The official website is a fork of this repository with additional features such as authentication, which are necessary for providing the service online. The core source code of Morphic resides in this repository, and it's designed to be easily built and deployed.
 
 ## 🗂️ Overview
 

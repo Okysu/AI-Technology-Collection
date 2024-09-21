@@ -14,24 +14,17 @@ const fontSans = FontSans({
   variable: '--font-sans'
 })
 
-const title = 'Morphic'
+const title = 'AI聚技栈'
 const description =
-  'A fully open-source AI-powered answer engine with a generative UI.'
+  'AI聚技栈是一个人工智能技术的学习和交流平台，提供人工智能技术的学习资源、技术文章、技术问答、技术分享等服务。'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://morphic.sh'),
   title,
   description,
   openGraph: {
     title,
     description
   },
-  twitter: {
-    title,
-    description,
-    card: 'summary_large_image',
-    creator: '@miiura'
-  }
 }
 
 export const viewport: Viewport = {

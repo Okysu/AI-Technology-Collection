@@ -57,7 +57,7 @@ const CodeBlock: FC<Props> = memo(({ language, value }) => {
     }
     const fileExtension = programmingLanguages[language] || '.file'
     const suggestedFileName = `file-${generateId()}${fileExtension}`
-    const fileName = window.prompt('Enter file name' || '', suggestedFileName)
+    const fileName = window.prompt('输入文件名称' || '', suggestedFileName)
 
     if (!fileName) {
       // User pressed cancel on prompt.

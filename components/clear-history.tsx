@@ -28,19 +28,18 @@ export function ClearHistory({ empty }: ClearHistoryProps) {
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
         <Button variant="outline" className="w-full" disabled={empty}>
-          Clear History
+          清除历史
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>您确定要这么做吗？</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            history and remove your data from our servers.
+            此操作无法撤消。这将永久删除您的历史记录并从我们的服务器中移除您的数据。
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={isPending}>取消</AlertDialogCancel>
           <AlertDialogAction
             disabled={isPending}
             onClick={event => {
@@ -50,13 +49,13 @@ export function ClearHistory({ empty }: ClearHistoryProps) {
                 if (result?.error) {
                   toast.error(result.error)
                 } else {
-                  toast.success('History cleared')
+                  toast.success('历史已清除')
                 }
                 setOpen(false)
               })
             }}
           >
-            {isPending ? <Spinner /> : 'Clear'}
+            {isPending ? <Spinner /> : '清除'}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

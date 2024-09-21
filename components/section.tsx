@@ -21,6 +21,15 @@ type SectionProps = {
   separator?: boolean
 }
 
+const TitleMap: { [key: string]: string } = {
+  Images: '图片',
+  Videos: '视频',
+  Sources: '来源',
+  Answer: '回答',
+  Related: '相关',
+  'Follow-up': '追问'
+}
+
 export const Section: React.FC<SectionProps> = ({
   children,
   className,
@@ -67,7 +76,7 @@ export const Section: React.FC<SectionProps> = ({
         {title && (
           <h2 className="flex items-center leading-none py-2">
             {icon}
-            {title}
+            {TitleMap[title] || title}
           </h2>
         )}
         {children}

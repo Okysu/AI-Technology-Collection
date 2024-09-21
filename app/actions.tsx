@@ -230,7 +230,7 @@ async function submit(
       const relatedQueries = await querySuggestor(uiStream, processedMessages)
       // Add follow-up panel
       uiStream.append(
-        <Section title="Follow-up">
+        <Section title="继续提问">
           <FollowupPanel />
         </Section>
       )
@@ -421,7 +421,7 @@ export const getUIStateFromAIState = (aiState: Chat) => {
               return {
                 id,
                 component: (
-                  <Section title="Follow-up" className="pb-8">
+                  <Section title="再次提问" className="pb-8">
                     <FollowupPanel />
                   </Section>
                 )

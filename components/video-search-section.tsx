@@ -21,7 +21,7 @@ export function VideoSearchSection({ result }: VideoSearchSectionProps) {
           <Section size="sm" className="pt-2 pb-0">
             <ToolBadge tool="search">{`${searchResults.searchParameters.q}`}</ToolBadge>
           </Section>
-          <Section title="Videos">
+          <Section title="视频">
             <VideoSearchResults results={searchResults} />
           </Section>
         </>

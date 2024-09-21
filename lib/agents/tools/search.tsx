@@ -39,9 +39,9 @@ export const searchTool = ({ uiStream, fullResponse }: ToolProps) =>
         query.length < 5 ? query + ' '.repeat(5 - query.length) : query
       let searchResult: SearchResults
       const searchAPI =
-        (process.env.SEARCH_API as 'tavily' | 'exa' | 'searxng') || 'tavily'
+        (process.env.SEARCH_API as 'tavily' | 'exa' | 'searxng' | 'bing') ||
+        'tavily'
 
-     
       const effectiveSearchDepth =
         searchAPI === 'searxng' &&
         process.env.SEARXNG_DEFAULT_DEPTH === 'advanced'
@@ -55,7 +55,8 @@ export const searchTool = ({ uiStream, fullResponse }: ToolProps) =>
       try {
         if (searchAPI === 'searxng' && effectiveSearchDepth === 'advanced') {
           // API route for advanced SearXNG search
-          const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+          const baseUrl =
+            process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
           const response = await fetch(`${baseUrl}/api/advanced-search`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -74,17 +75,27 @@ export const searchTool = ({ uiStream, fullResponse }: ToolProps) =>
           }
           searchResult = await response.json()
         } else {
-          searchResult = await (searchAPI === 'tavily'
-            ? tavilySearch
-            : searchAPI === 'exa'
-            ? exaSearch
-            : searxngSearch)(
-            filledQuery,
-            max_results,
-            effectiveSearchDepth,
-            include_domains,
-            exclude_domains
-          )
+          if (searchAPI === 'bing') {
+            searchResult = await bingSearch(
+              filledQuery,
+              max_results,
+              effectiveSearchDepth,
+              include_domains,
+              exclude_domains
+            )
+          } else {
+            searchResult = await (searchAPI === 'tavily'
+              ? tavilySearch
+              : searchAPI === 'exa'
+              ? exaSearch
+              : searxngSearch)(
+              filledQuery,
+              max_results,
+              effectiveSearchDepth,
+              include_domains,
+              exclude_domains
+            )
+          }
         }
       } catch (error) {
         console.error('Search API error:', error)
@@ -165,6 +176,99 @@ async function tavilySearch(
   return {
     ...data,
     images: processedImages
+  }
+}
+
+async function bingSearch(
+  query: string,
+  maxResults: number = 10,
+  searchDepth: 'basic' | 'advanced' = 'basic',
+  includeDomains: string[] = [],
+  excludeDomains: string[] = []
+): Promise<SearchResults> {
+  const apiKey = process.env.BING_SEARCH_API_KEY
+  if (!apiKey) {
+    throw new Error(
+      'BING_SEARCH_API_KEY is not set in the environment variables'
+    )
+  }
+
+  const baseUrl = 'https://api.bing.microsoft.com/v7.0'
+  const includeImageDescriptions = true
+
+  // Web Search
+  const webSearchUrl = `${baseUrl}/search?q=${encodeURIComponent(
+    query
+  )}&count=${maxResults}`
+  const webSearchResponse = await fetch(webSearchUrl, {
+    headers: {
+      'Ocp-Apim-Subscription-Key': apiKey
+    }
+  })
+
+  if (!webSearchResponse.ok) {
+    throw new Error(
+      `Bing Web Search API error: ${webSearchResponse.status} ${webSearchResponse.statusText}`
+    )
+  }
+
+  const webData = await webSearchResponse.json()
+
+  // Image Search
+  const imageSearchUrl = `${baseUrl}/images/search?q=${encodeURIComponent(
+    query
+  )}&count=${maxResults}`
+  const imageSearchResponse = await fetch(imageSearchUrl, {
+    headers: {
+      'Ocp-Apim-Subscription-Key': apiKey
+    }
+  })
+
+  if (!imageSearchResponse.ok) {
+    throw new Error(
+      `Bing Image Search API error: ${imageSearchResponse.status} ${imageSearchResponse.statusText}`
+    )
+  }
+
+  const imageData = await imageSearchResponse.json()
+
+  // Process web search results
+  const results: SearchResultItem[] =
+    webData.webPages?.value.map((page: any) => ({
+      title: page.name,
+      url: page.url,
+      content: page.snippet
+    })) || []
+
+  // Process image search results
+  const processedImages: SearchResultImage[] = imageData.value.map(
+    (image: any) => {
+      if (includeImageDescriptions) {
+        return {
+          url: image.contentUrl,
+          description: image.name
+        }
+      }
+      return image.contentUrl
+    }
+  )
+
+  // Apply domain filters
+  const filteredResults = results.filter(result => {
+    const domain = new URL(result.url).hostname
+    return (
+      (includeDomains.length === 0 ||
+        includeDomains.some(d => domain.includes(d))) &&
+      (excludeDomains.length === 0 ||
+        !excludeDomains.some(d => domain.includes(d)))
+    )
+  })
+
+  return {
+    query,
+    results: filteredResults,
+    images: processedImages,
+    number_of_results: filteredResults.length
   }
 }
 

@@ -199,7 +199,7 @@ async function bingSearch(
   // Web Search
   const webSearchUrl = `${baseUrl}/search?q=${encodeURIComponent(
     query
-  )}&count=${maxResults}`
+  )}&count=${maxResults}&mkt=zh-CN`
   const webSearchResponse = await fetch(webSearchUrl, {
     headers: {
       'Ocp-Apim-Subscription-Key': apiKey
@@ -214,24 +214,6 @@ async function bingSearch(
 
   const webData = await webSearchResponse.json()
 
-  // Image Search
-  const imageSearchUrl = `${baseUrl}/images/search?q=${encodeURIComponent(
-    query
-  )}&count=${maxResults}`
-  const imageSearchResponse = await fetch(imageSearchUrl, {
-    headers: {
-      'Ocp-Apim-Subscription-Key': apiKey
-    }
-  })
-
-  if (!imageSearchResponse.ok) {
-    throw new Error(
-      `Bing Image Search API error: ${imageSearchResponse.status} ${imageSearchResponse.statusText}`
-    )
-  }
-
-  const imageData = await imageSearchResponse.json()
-
   // Process web search results
   const results: SearchResultItem[] =
     webData.webPages?.value.map((page: any) => ({
@@ -241,11 +223,11 @@ async function bingSearch(
     })) || []
 
   // Process image search results
-  const processedImages: SearchResultImage[] = imageData.value.map(
+  const processedImages: SearchResultImage[] = webData.images?.value.map(
     (image: any) => {
       if (includeImageDescriptions) {
         return {
-          url: image.contentUrl,
+          url: image.thumbnailUrl,
           description: image.name
         }
       }

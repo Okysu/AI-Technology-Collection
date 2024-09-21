@@ -93,31 +93,29 @@ cp .env.local.example .env.local
 Your .env.local file should look like this:
 
 ```
+# Required
+# The settings below are essential for the basic functionality of the system.
+
 # OpenAI API key retrieved here: https://platform.openai.com/api-keys
-OPENAI_API_KEY=
+OPENAI_API_KEY=[YOUR_OPENAI_API_KEY]
 
 # Tavily API Key retrieved here: https://app.tavily.com/home
-TAVILY_API_KEY=
+# TAVILY_API_KEY=[YOUR_TAVILY_API_KEY]
+
+# If you use Bing Search
+# BING_SEARCH_API_KEY=[YOUR_BING_SEARCH_API_KEY]
+
+# Redis Configuration
+USE_LOCAL_REDIS=false
+LOCAL_REDIS_URL=redis://localhost:6379 # or redis://redis:6379 if you're using docker compose
 
 # Upstash Redis URL and Token retrieved here: https://console.upstash.com/redis
-UPSTASH_REDIS_REST_URL=
-UPSTASH_REDIS_REST_TOKEN=
-
-## Redis Configuration
-
-This application supports both Upstash Redis and local Redis. To use local Redis:
-
-1. Set `USE_LOCAL_REDIS=true` in your `.env.local` file.
-2. Optionally, set `LOCAL_REDIS_URL` if your local Redis is not running on the default `localhost:6379` or `redis://redis:6379` if you're using docker compose.
-
-To use Upstash Redis:
-
-1. Set `USE_LOCAL_REDIS=false` or leave it unset in your `.env.local` file.
-2. Set `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` with your Upstash credentials.
+UPSTASH_REDIS_REST_URL=[YOUR_UPSTASH_REDIS_REST_URL]
+UPSTASH_REDIS_REST_TOKEN=[YOUR_UPSTASH_REDIS_REST_TOKEN]
 
 # SearXNG Configuration
 SEARXNG_API_URL=http://localhost:8080  # Replace with your local SearXNG API URL or docker http://searxng:8080
-SEARCH_API=tavily  #  use searxng, tavily or exa
+SEARCH_API=tavily  #  use searxng, tavily, exa or bing
 SEARXNG_SECRET="" # generate a secret key e.g. openssl rand -base64 32
 SEARXNG_PORT=8080 # default port
 SEARXNG_BIND_ADDRESS=0.0.0.0 # default address
@@ -125,6 +123,58 @@ SEARXNG_IMAGE_PROXY=true # enable image proxy
 SEARXNG_LIMITER=false # can be enabled to limit the number of requests per IP address
 SEARXNG_DEFAULT_DEPTH=basic # Set to 'basic' or 'advanced', only affects SearXNG searches
 SEARXNG_MAX_RESULTS=50 # Maximum number of results to return from SearXNG
+SEARXNG_ENGINES=google,bing,duckduckgo,wikipedia # Search engines to use
+SEARXNG_TIME_RANGE=None # Time range for search results: day, week, month, year, or None (for all time)
+SEARXNG_SAFESEARCH=0 # Safe search setting: 0 (off), 1 (moderate), 2 (strict)
+
+# Optional
+# The settings below can be used optionally as needed.
+
+# Used to set the base URL path for OpenAI API requests.
+# If you need to set a BASE URL, uncomment and set the following:
+# OPENAI_API_BASE=
+
+# Used to set the model for OpenAI API requests.
+# If not set, the default is gpt-4o.
+# OPENAI_API_MODEL=gpt-4o-mini
+
+# Azure OpenAI API key retrieved here: https://oai.azure.com/resource/deployments/
+# AZURE_API_KEY=
+
+# The resource name is used in the assembled URL: https://{resourceName}.openai.azure.com/openai/deployments/{modelId}{path}.
+# AZURE_RESOURCE_NAME=
+
+# Used to set the deployment name for Azure OpenAI API requests.
+# If not set, the default is gpt-4o.
+# AZURE_DEPLOYMENT_NAME=
+
+# If you want to use Google Generative AI instead of OpenAI, enable the following settings.
+# Google Generative AI API key retrieved here: https://aistudio.google.com/app/apikey
+# GOOGLE_GENERATIVE_AI_API_KEY=[YOUR_GOOGLE_GENERATIVE_AI_API_KEY]
+
+# If you want to use Anthropic instead of OpenAI, enable the following settings.
+# ANTHROPIC_API_KEY=[YOUR_ANTHROPIC_API_KEY]
+
+# [Unstable] If you want to use Ollama, enable the following variables.
+# OLLAMA_MODEL=[YOUR_OLLAMA_MODEL] # The main model to use. Recommended: mistral or openhermes
+# OLLAMA_SUB_MODEL=[YOUR_OLLAMA_SUB_MODEL] # The sub model to use. Recommended: phi3 or llama3
+# OLLAMA_BASE_URL=[YOUR_OLLAMA_URL] # The base URL to use. e.g. http://localhost:11434
+
+# Only writers can set a specific model. It must be compatible with the OpenAI API.
+# USE_SPECIFIC_API_FOR_WRITER=true
+# SPECIFIC_API_BASE=[YOUR_API_BASE] # e.g. https://api.groq.com/openai/v1
+# SPECIFIC_API_KEY=[YOUR_API_KEY]
+# SPECIFIC_API_MODEL=[YOUR_API_MODEL] # e.g. llama-3.1-70b-versatile
+
+# enable the share feature
+# If you enable this feature, separate account management implementation is required.
+# ENABLE_SHARE=true
+
+# enable the video search tool
+# Serper API Key retrieved here: https://serper.dev/api-key
+# SERPER_API_KEY=[YOUR_SERPER_API_KEY]
+
+#NEXT_PUBLIC_BASE_URL=http://localhost:3000
 
 ```
 

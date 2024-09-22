@@ -105,6 +105,9 @@ OPENAI_API_KEY=[YOUR_OPENAI_API_KEY]
 # If you use Bing Search
 # BING_SEARCH_API_KEY=[YOUR_BING_SEARCH_API_KEY]
 
+# If you use OpenAI Model, you can enhance the bing search results.
+# BING_ENHANCEMENT=true
+
 # Redis Configuration
 USE_LOCAL_REDIS=false
 LOCAL_REDIS_URL=redis://localhost:6379 # or redis://redis:6379 if you're using docker compose

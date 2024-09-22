@@ -102,3 +102,20 @@ export function transformToolMessages(messages: CoreMessage[]): CoreMessage[] {
 export function sanitizeUrl(url: string): string {
   return url.replace(/\s+/g, '%20')
 }
+
+
+export const getEmbeddingModel = () =>{
+  const OPENAI_EMBEDDING_MODEL = process.env.OPENAI_EMBEDDING_MODEL
+  if (!OPENAI_EMBEDDING_MODEL) {
+    throw new Error('Missing environment variable for OpenAI Embedding Model')
+  }
+  const openaiApiBase = process.env.OPENAI_API_BASE
+  const openaiApiKey = process.env.OPENAI_API_KEY
+  const openai = createOpenAI({
+    baseURL: openaiApiBase, // optional base URL for proxies etc.
+    apiKey: openaiApiKey, // optional API key, default to env property OPENAI_API_KEY
+    organization: '' // optional organization
+  })
+
+  return openai.embedding(OPENAI_EMBEDDING_MODEL)
+}

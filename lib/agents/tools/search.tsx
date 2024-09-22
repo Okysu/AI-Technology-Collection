@@ -12,6 +12,7 @@ import {
   SearXNGResponse,
   SearXNGResult
 } from '@/lib/types'
+import { scrape } from './utils/scrape'
 
 export const searchTool = ({ uiStream, fullResponse }: ToolProps) =>
   tool({
@@ -222,6 +223,17 @@ async function bingSearch(
       content: page.snippet
     })) || []
 
+  const OPENAI_EMBEDDING_MODEL = process.env.OPENAI_EMBEDDING_MODEL
+  if (OPENAI_EMBEDDING_MODEL) {
+    for (let i = 0; i < Math.min(results.length, 3); i++) {
+      const result = results[i]
+      const content = await scrape(result.url, query)
+      result.content = `Snippet: ${result.content}
+      Maybe Related: ${content}
+      `
+    }
+  }
+
   // Process image search results
   const processedImages: SearchResultImage[] = webData.images?.value.map(
     (image: any) => {
@@ -231,7 +243,7 @@ async function bingSearch(
           description: image.name
         }
       }
-      return image.contentUrl
+      return image.thumbnailUrl
     }
   )
 
